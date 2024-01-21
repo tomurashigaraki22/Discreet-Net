@@ -15,7 +15,7 @@ const Search = () => {
           <FaSearch /> {/* Search icon */}
         </button>
       </div>
-      <div className="container mx-auto w-[350px] mt-10 p-8 bg-gray-700 text-white rounded-lg">
+      <div className="container mx-auto w-[350px] mt-10 p-3 bg-gray-700 text-white rounded-lg">
         <div className="p-8 bg-gray-700 text-white">
           <h1 className="text-xl font-bold mb-4">About Discreet Net</h1>
           <p className="text-md">
