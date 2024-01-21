@@ -1,61 +1,62 @@
-import React from "react";
+import React, { useState } from "react";
 import 'react-activity/dist/library.css';
 import { Dots } from 'react-activity';
-import { useEffect, useState } from "react";
-import { LOGIN_TEST } from "../../config";
-import { Link, useNavigate } from "react-router-dom";
+import { SIGNUP_TEST } from "../../config";
+import { Link } from "react-router-dom";
 
-const Login = () => {
+const Signup = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [logging, setLogging] = useState(false);
-  const navigate = useNavigate();
-  const [incorrectUop, setIncorrectUop] = useState(false);
+  const [signingUp, setSigningUp] = useState(false);
+  const [signupError, setSignupError] = useState(false);
+  const [uale, setuale] = useState(false)
 
-  const onLogin = async () => {
-    console.log('login');
+  const onSignup = async () => {
     const formData = new FormData();
     formData.append('username', username);
     formData.append('password', password);
     
     try {
-      setLogging(true);
-      setIncorrectUop(false);
+      setSigningUp(true);
+      setSignupError(false);
 
-      const response = await fetch(`${LOGIN_TEST}`, {
+      const response = await fetch(`${SIGNUP_TEST}`, {
         method: 'POST',
         body: formData,
       });
+      console.log(response)
 
       const resp2 = await response.json();
 
       if (resp2.status === 200) {
-        console.log('Login worked');
-        setLogging(false);
-        localStorage.setItem('token', resp2.token)
-        navigate('/home')
-      } else if (resp2.status === 404) {
-        console.log('Incorrect uop');
-        setIncorrectUop(true);
-        setLogging(false);
+        console.log('Signup successful');
+        setSigningUp(false);
+      } else if (resp2.status === 409) {
+        console.log('Username already exists');
+        setuale(true)
+        setSigningUp(false);
       } else {
         // Handle other error cases
         console.error('Unexpected error occurred.');
-        setLogging(false);
+        setSigningUp(true)
+        setSigningUp(false);
       }
     } catch (error) {
-      console.error('Error during login:', error);
-      setLogging(false);
+      console.error('Error during signup:', error);
+      setSigningUp(false);
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center">
       <div className="text-white mb-7 text-4xl font-bold">DiscreetNet</div>
-      <div className="bg-white p-8 rounded-lg shadow-lg w-[300px] md:w-[700px] sm:w-[500px]">
-        <h2 className="text-3xl font-bold mb-8 text-gray-900">Login</h2>
-        {incorrectUop && (
-          <p className="text-red-500 mb-4">Incorrect username or password.</p>
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h2 className="text-3xl font-bold mb-8 text-gray-900">Sign Up</h2>
+        {uale && (
+          <p className="text-red-500 mb-4">Username already exists. Please choose a new one.</p>
+        )}
+        {signupError && (
+          <p className="text-red-500 mb-4">Unknown Error Occured. Please Try Again</p>
         )}
         <div className="mb-4">
           <label htmlFor="username" className="block text-gray-800 font-semibold mb-2">
@@ -84,15 +85,15 @@ const Login = () => {
           />
         </div>
         <button
-          onClick={onLogin}
+          onClick={onSignup}
           className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition"
         >
-          {logging ? <Dots color="#fff" /> : 'Login'}
+          {signingUp ? <Dots color="#fff" /> : 'Sign Up'}
         </button>
-        <p className="text-sm mt-3">Don't have an account, Sign Up <Link to='/signup' className="underline font-bold">Here</Link></p>
+        <p className="text-sm mt-3">Already have an account, Login <Link to='/' className="underline font-bold">Here</Link></p>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default Signup;
