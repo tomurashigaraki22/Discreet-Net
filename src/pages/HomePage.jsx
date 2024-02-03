@@ -34,7 +34,6 @@ const HomeScreen = () => {
 
           if (resp2.length > 0) {
             const postsWithLikes = resp2.map((post) => {
-              post.alreadyLiked = false;
               return post;
             });
 
@@ -79,7 +78,7 @@ const HomeScreen = () => {
         ) : (
           <div className="flex-col items-center justify-center">
             {posts.map((post) => (
-              <Post key={post.id} post={post} />
+              <Post key={post.id} post={post} user={username} alreadyLiked={post.alreadyLiked}/>
             ))}
           </div>
         )}

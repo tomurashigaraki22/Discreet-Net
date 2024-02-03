@@ -6,6 +6,7 @@ import './App.css'
 import Login from './pages/Login'
 import Signup from './pages/Register'
 import HomeScreen from './pages/HomePage'
+import Profile from './pages/Profile'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -17,6 +18,7 @@ function App() {
           <Route path='/' element={<Login/>}/>
           <Route path='/signup' element={<Signup/>}/>
           <Route path='/home' element={<HomeScreen/>}/>
+          <Route path='/profile/:username' element={<Profile/>}/>
         </Routes>
       </Router>
     </div>
